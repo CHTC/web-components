@@ -4,6 +4,10 @@
   "description": "PATh Web Components",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CHTC/web-components.git"
+  },
   "scripts": {
     "test": "jest --coverage --json --outputFile=.github/tests/test-summary.json",
     "build": "tsc --build src",

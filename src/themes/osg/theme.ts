@@ -3,8 +3,6 @@
 import {createTheme, responsiveFontSizes} from "@mui/material";
 import Link from "next/link";
 
-import { poppins } from "./fonts";
-
 const theme = responsiveFontSizes(
   createTheme({
     palette: {
@@ -17,27 +15,21 @@ const theme = responsiveFontSizes(
     },
     typography: {
       h1: {
-        fontFamily: poppins.style.fontFamily,
         fontWeight: 500
       },
       h2: {
-        fontFamily: poppins.style.fontFamily,
         fontWeight: 500,
       },
       h3: {
-        fontFamily: poppins.style.fontFamily,
         fontWeight: 500,
       },
       h4: {
-        fontFamily: poppins.style.fontFamily,
         fontWeight: 700,
       },
       h5: {
-        fontFamily: poppins.style.fontFamily,
         fontWeight: 700,
       },
       h6: {
-        fontFamily: poppins.style.fontFamily,
         fontWeight: 700,
       },
       body1: {

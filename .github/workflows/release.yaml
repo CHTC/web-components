@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -28,7 +32,5 @@ jobs:
 
       - name: Publish to npm
         run: cd dist && npm run publish:increment
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_KEY }}
 
       - uses: stefanzweifel/git-auto-commit-action@v5

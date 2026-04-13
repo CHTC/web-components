@@ -54,6 +54,11 @@ const theme = responsiveFontSizes(
         defaultProps: {
           component: Link
         }
+      },
+      MuiButtonBase: {
+        defaultProps: {
+          LinkComponent: Link,
+        }
       }
     },
   }),

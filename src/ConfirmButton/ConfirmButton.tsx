@@ -5,33 +5,33 @@ import { Theme } from "@mui/material/styles"
 export type ConfirmButtonProps  = IconButtonProps & {
 	color: keyof Theme['palette'];
 	confirmNode?: ReactNode;
+  growDirection?: 'right' | 'left';
 	onConfirm?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const ConfirmButton = ({onConfirm, confirmNode = 'Confirm', ...props}: ConfirmButtonProps) => {
+const ConfirmButton = ({onConfirm, confirmNode = 'Confirm', growDirection : defaultGrowDirection = 'right', ...props}: ConfirmButtonProps) => {
 
 	const theme = useTheme();
 	const [askingForConfirmation, setAskingForConfirmation] = useState(false);
-	const [growDirection, setGrowDirection] = useState<'right' | 'left'>('right');
+	const [growDirection, setGrowDirection] = useState<'right' | 'left'>(defaultGrowDirection);
 	const iconButtonRef = useRef<HTMLButtonElement>(null);
 	const confirmButtonRef = useRef<HTMLButtonElement>(null);
 
 	useEffect(() => {
-		if (askingForConfirmation && iconButtonRef.current && confirmButtonRef.current) {
-			const iconRect = iconButtonRef.current.getBoundingClientRect();
-			const confirmRect = confirmButtonRef.current.getBoundingClientRect();
-			const spaceRight = window.innerWidth - iconRect.right;
-			const spaceLeft = iconRect.left;
-			const confirmWidth = confirmRect.width;
-			if (spaceRight >= confirmWidth) {
-				setGrowDirection('right');
-			} else if (spaceLeft >= confirmWidth) {
-				setGrowDirection('left');
-			} else {
-				// Default to right if neither fits
-				setGrowDirection('right');
-			}
-		}
+    if (askingForConfirmation && iconButtonRef.current && confirmButtonRef.current) {
+      const iconRect = iconButtonRef.current.getBoundingClientRect();
+      const confirmRect = confirmButtonRef.current.getBoundingClientRect();
+      const spaceRight = window.innerWidth - iconRect.right;
+      const spaceLeft = iconRect.left;
+      const confirmWidth = confirmRect.width;
+      if (spaceRight < confirmWidth) {
+        setGrowDirection('left');
+      } else if (spaceLeft < confirmWidth) {
+        setGrowDirection('right');
+      } else {
+        setGrowDirection(defaultGrowDirection);
+      }
+    }
 	}, [askingForConfirmation]);
 
 	return (

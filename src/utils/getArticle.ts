@@ -1,4 +1,4 @@
-import {BackendArticle, Image, tag, website} from "../types";
+import {Article, BackendArticle, Image, tag, website} from "../types";
 import matter from "gray-matter";
 import {getRawFile} from "./getArticles";
 
@@ -6,20 +6,22 @@ export async function getArticle(organization: string, repo: string, path: strin
 	const text = await getRawFile(organization, repo, path, branch)
 	const frontMatter = matter(text)
 
+	const data = frontMatter.data as Article;
+
 	return {
 		path: path,
 		slug: getSlug(path),
 		date: getDate(path),
 		content: frontMatter.content,
-		title: frontMatter.data?.title as string,
-		author: frontMatter.data?.author as string,
-		publish_on: frontMatter.data?.publish_on as website[],
-		type: frontMatter.data?.type as "news" | "user",
-		tag: frontMatter.data?.tag as tag,
-		image: frontMatter.data?.image as Image,
-		excerpt: frontMatter.data?.excerpt as string,
-		banner_src: frontMatter.data?.banner_src as string,
-		banner_alt: frontMatter.data?.banner_alt as string
+		title: data.title,
+		author: data.author,
+		publish_on: data.publish_on,
+		type: data.type,
+		tag: data.tag,
+		image: data.image,
+		excerpt: data?.excerpt,
+		banner_src: data?.banner_src,
+		banner_alt: data?.banner_alt,
 	}
 }
 

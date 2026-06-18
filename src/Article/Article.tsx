@@ -1,10 +1,8 @@
 import {Typography, Box, Container} from '@mui/material';
 import Balancer from "react-wrap-balancer";
-import Markdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
 
 import {BackendArticle} from '../types'
-import markdownComponents from "../markdownComponents";
+import MarkdownContent from "../markdownComponents/MarkdownContent";
 
 const Article = ({article}: {article: BackendArticle}) => {
 	return (
@@ -20,12 +18,9 @@ const Article = ({article}: {article: BackendArticle}) => {
 							<Typography variant={"h5"}>{article.date.toLocaleDateString()}</Typography>
 						</Box>
 					</Box>
-					<Markdown
-							rehypePlugins={[rehypeRaw]}
-							components={markdownComponents}
-					>
+					<MarkdownContent>
 						{article.content}
-					</Markdown>
+					</MarkdownContent>
 				</Box>
 			</Container>
 	)

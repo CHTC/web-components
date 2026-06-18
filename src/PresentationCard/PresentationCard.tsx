@@ -9,29 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Markdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
+import MarkdownContent from "../markdownComponents/MarkdownContent";
 import smallHeaderComponents from "../smallHeaderComponents/smallHeaderComponents";
 import { Presentation } from "../types";
-
-function getStringHash(value: string): number {
-  // Simple hash function to generate a number from the tag string
-  let hash = 0;
-  for (let i = 0; i < value.length; i++) {
-    hash = value.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  return hash;
-}
-
-function getTagColor(tag: string): string {
-  let hue = getStringHash(tag) % 360;
-  if (hue >= 60 && hue <= 140) {
-    hue = (hue + 80) % 360; // avoid ugly colors
-  }
-
-  return `hsl(${hue}, 70%, 40%)`;
-}
+import { getTagColor } from "../utils/tagColor";
+import { formatLongDate } from "../utils/formatDate";
 
 export interface PresentationCardProps {
   presentation: Presentation;
@@ -60,12 +42,7 @@ const PresentationCard = ({
   );
   const descRef = useRef<HTMLDivElement>(null);
 
-  const formattedDate = new Date(date).toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  const formattedDate = formatLongDate(date);
 
   function updateGradientVisibility() {
     if (descRef.current && maxDescriptionHeight) {
@@ -138,12 +115,9 @@ const PresentationCard = ({
           }
           onClick={() => setShowGradient(false)}
         >
-          <Markdown
-            rehypePlugins={[rehypeRaw]}
-            components={smallHeaderComponents}
-          >
+          <MarkdownContent components={smallHeaderComponents}>
             {description}
-          </Markdown>
+          </MarkdownContent>
           {showGradient && (
             <div
               className="gradient-overlay"

@@ -1,28 +1,9 @@
 import { Box, Chip, Container, Link, Stack, Typography } from "@mui/material";
-import Markdown from "react-markdown";
 import Balancer from "react-wrap-balancer";
-import rehypeRaw from "rehype-raw";
-import markdownComponents from "../markdownComponents";
+import MarkdownContent from "../markdownComponents/MarkdownContent";
 import { Presentation as PresentationType } from "../types";
-
-function getStringHash(value: string): number {
-  // Simple hash function to generate a number from the tag string
-  let hash = 0;
-  for (let i = 0; i < value.length; i++) {
-    hash = value.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  return hash;
-}
-
-function getTagColor(tag: string): string {
-  let hue = getStringHash(tag) % 360;
-  if (hue >= 60 && hue <= 140) {
-    hue = (hue + 80) % 360; // avoid ugly colors
-  }
-
-  return `hsl(${hue}, 70%, 40%)`;
-}
+import { getTagColor } from "../utils/tagColor";
+import { formatLongDate } from "../utils/formatDate";
 
 const Presentation = ({
   title,
@@ -34,12 +15,7 @@ const Presentation = ({
   keywords = [],
   links = [],
 }: PresentationType) => {
-  const formattedDate = new Date(date).toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  const formattedDate = formatLongDate(date);
 
   return (
     <Container maxWidth={"md"}>
@@ -79,9 +55,9 @@ const Presentation = ({
         )}
 
 				{ description && (
-					<Markdown rehypePlugins={[rehypeRaw]} components={markdownComponents}>
+					<MarkdownContent>
 						{description}
-					</Markdown>
+					</MarkdownContent>
 				)}
 
         <Stack direction="row" spacing={1} sx={{ mb: 1, flexWrap: "wrap" }}>

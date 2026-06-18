@@ -1,5 +1,3 @@
-import { SxProps } from "@mui/material";
-import { ReactElement } from "react";
 export * from "./TimeBar";
 
 /**
@@ -29,9 +27,9 @@ export interface Article {
   type: article_type;
   tag: tag;
   image: Image;
-  excerpt: string;
-  banner_src: string;
-  banner_alt: string;
+  excerpt?: string;
+  banner_src?: string;
+  banner_alt?: string;
 }
 
 export interface BackendArticle extends Article {

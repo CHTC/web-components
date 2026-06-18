@@ -1,68 +1,28 @@
 'use client'
 
-import {createTheme, responsiveFontSizes} from "@mui/material";
 import Link from "next/link";
 
+import {createBaseTheme} from "../createBaseTheme";
 import {rhd, rht} from "./fonts"
 
-const theme = responsiveFontSizes(
-  createTheme({
-    palette: {
-      primary: {
-        main: "#B61F24"
-      },
-      secondary: {
-        main: "#000000"
+const theme = createBaseTheme({
+  palette: {
+    primary: {
+      main: "#B61F24"
+    },
+    secondary: {
+      main: "#000000"
+    }
+  },
+  headingFontFamily: rhd.style.fontFamily,
+  bodyFontFamily: rht.style.fontFamily,
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: Link,
       }
-    },
-    typography: {
-      h1: {
-        fontFamily: rhd.style.fontFamily,
-        fontWeight: 500
-      },
-      h2: {
-        fontFamily: rhd.style.fontFamily,
-        fontWeight: 500,
-      },
-      h3: {
-        fontFamily: rhd.style.fontFamily,
-        fontWeight: 500,
-      },
-      h4: {
-        fontFamily: rhd.style.fontFamily,
-        fontWeight: 700,
-      },
-      h5: {
-        fontFamily: rhd.style.fontFamily,
-        fontWeight: 700,
-      },
-      h6: {
-        fontFamily: rhd.style.fontFamily,
-        fontWeight: 700,
-      },
-      fontFamily: [
-        rht.style.fontFamily,
-        "Helvetica Neue",
-        "Helvetica",
-        "Arial",
-        "Lucida Grande",
-        "sans-serif"
-      ].join(",")
-    },
-    components: {
-      MuiLink: {
-        defaultProps: {
-          component: Link
-        }
-      },
-      MuiButtonBase: {
-        defaultProps: {
-          LinkComponent: Link,
-        }
-      }
-    },
-  }),
-  {factor: 2}
-)
+    }
+  },
+})
 
 export default theme;

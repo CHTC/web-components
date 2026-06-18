@@ -36,7 +36,7 @@ const ColorBar = ({ data, red=r[500], green=grn[500], grey=gry[300], ...svgProps
 			setContainerWidth(containerRef.current.clientWidth);
 			setContainerHeight(containerRef.current.clientHeight);
 		}
-	}, [containerRef.current])
+	}, [])
 
 	useEffect(() => {
 		updateContainerSize();

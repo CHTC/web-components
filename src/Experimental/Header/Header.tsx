@@ -18,10 +18,10 @@ const Header = ({icon, title, menuItems}: HeaderProps) => {
 	// Scroll watcher for opacity
 	let [scrolledTop, setScrolledTop] = useState(true);
 	useEffect(() => {
-		setScrolledTop(window.scrollY < 50);
-		addEventListener("scroll", () => {
-			setScrolledTop(window.scrollY < 50);
-		});
+		const onScroll = () => setScrolledTop(window.scrollY < 50);
+		onScroll();
+		window.addEventListener("scroll", onScroll);
+		return () => window.removeEventListener("scroll", onScroll);
 	}, [])
 
 	return (

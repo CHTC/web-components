@@ -14,13 +14,16 @@ export async function getArticles(organization: string, repo: string, branch: st
 	return Promise.all(
 			paths
 					.filter((path) => isArticle(path))
-					.map(async (path) => await getArticle(organization, repo, path, branch))
+					.map((path) => getArticle(organization, repo, path, branch))
 	)
 }
 
 export async function getTree(organization: string, repo: string, branch: string): Promise<GitTree> {
 	const url = `https://api.github.com/repos/${organization}/${repo}/git/trees/${branch}?recursive=1`
 	const res = await fetch(url)
+	if (!res.ok) {
+		throw new Error(`Failed to fetch git tree (${res.status} ${res.statusText}): ${url}`)
+	}
 	const json = await res.json()
 	return json as GitTree
 }
@@ -34,6 +37,9 @@ export async function getRawFile(organization: string, repo: string, path: strin
 	const url = new URL(`https://raw.githubusercontent.com/${organization}/${repo}/${branch}/${path}`)
 
 	const res = await fetch(url, {headers: {"Accept": "application/vnd.github.raw"}})
+	if (!res.ok) {
+		throw new Error(`Failed to fetch raw file (${res.status} ${res.statusText}): ${path}`)
+	}
 
 	return await res.text()
 }

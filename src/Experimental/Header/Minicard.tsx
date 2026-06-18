@@ -1,8 +1,15 @@
 'use client';
-import React from 'react';
+
 import { Card, CardContent, CardHeader, List, ListItem, Divider, Box } from '@mui/material';
 
-const Minicard = ({ newsArticles }) => {
+interface NewsArticle {
+  title: string;
+  date: string;
+  author: string;
+  href: string;
+}
+
+const Minicard = ({ newsArticles }: { newsArticles: NewsArticle[] }) => {
   return (
     <Card sx={{ maxWidth: 400, border: '1px solid black', padding: 1 }}>
       <CardHeader title="News" />

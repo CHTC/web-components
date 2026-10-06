@@ -1,7 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "include": [
-    "./*"
+    "./*",
+    "./charts/*",
+    "./content/*"
   ],
   "compilerOptions": {
     "rootDir": ".",

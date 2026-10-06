@@ -55,14 +55,15 @@ const defaultArticle: Article = {
 	date: new Date(),
 	publish_on: ["htcondor"],
 	type: "news",
-	tag: "chtc_featured_article",
+	tag: ["chtc_featured_article"],
 	image: {
 		path: "https://placehold.co/600x400",
 		alt: "Sample Image"
 	},
 	excerpt: "This is a sample article.",
 	banner_src: "https://placehold.co/1200x300",
-	banner_alt: "Sample Banner"
+	banner_alt: "Sample Banner",
+	canonical_url: "https://chtc.cs.wisc.edu/sample-article.html"
 };
 
 export default defaultArticle;

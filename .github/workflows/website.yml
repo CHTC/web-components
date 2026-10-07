@@ -1,6 +1,6 @@
-# To get started with Next.js see: https://nextjs.org/docs/getting-started
+# Build the Storybook and deploy it to GitHub Pages
 #
-name: Deploy Next.js site to Pages
+name: Deploy Storybook to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -29,14 +29,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        # Version comes from the packageManager field in package.json
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: pnpm
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
       - name: Build
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
 
       - name: Upload artifact

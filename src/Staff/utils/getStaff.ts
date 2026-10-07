@@ -1,4 +1,4 @@
-import yaml from "js-yaml";
+import { load } from "js-yaml";
 
 import { getRawFile } from "../../github/getRawFile";
 import { getRepoPaths } from "../../github/getRepoPaths";
@@ -57,7 +57,7 @@ async function getStaffMember(
   options: GitHubFetchOptions
 ): Promise<Staff> {
   const text = await getRawFile(organization, repo, path, branch, options);
-  const data = yaml.load(text) as Staff;
+  const data = load(text) as Staff;
 
   return {
     ...data,

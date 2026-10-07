@@ -1,4 +1,4 @@
-import matter from "gray-matter";
+import matter from "@11ty/gray-matter";
 
 import { getRawFile } from "../../github/getRawFile";
 import type { GitHubFetchOptions } from "../../github/types";

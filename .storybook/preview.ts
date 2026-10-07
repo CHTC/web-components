@@ -1,4 +1,4 @@
-import type { Preview } from "@storybook/react";// .storybook/preview.js
+import type { Preview } from "@storybook/nextjs";// .storybook/preview.js
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 import { pelicanTheme, osgTheme, chtcTheme } from '../src/themes';

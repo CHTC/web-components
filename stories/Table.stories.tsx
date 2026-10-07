@@ -2,7 +2,7 @@ import { Box, SxProps } from "@mui/material";
 import Table from "../src/Table";
 import { defaultTableData } from "./mockData/Table";
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 const meta: Meta<typeof Table> = {
   title: "Components/Data/Table",
@@ -51,7 +51,7 @@ export const WithLinkCells: Story = {
       if (column === 0) {
         return <a href={`https://www.google.com/search?q=${cell}`}>{cell}</a>;
       }
-      return cell.toLocaleString();
+      return <>{cell.toLocaleString()}</>;
     },
     ...defaultTableData,
   },

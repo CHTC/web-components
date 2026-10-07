@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 import ArticleCard from '../src/Article/components/ArticleCard';
 import defaultBackendArticle from "./mockData/BackendArticle";

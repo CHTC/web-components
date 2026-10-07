@@ -1,5 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { IconButtonProps } from '@mui/material';
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import GarbageIcon from "@mui/icons-material/Delete"
 
 import ConfirmButton, { ConfirmButtonProps } from '../src/ConfirmButton/ConfirmButton';
@@ -23,7 +22,7 @@ export const Default: Story = {
     disabled: false,
 		children: <GarbageIcon />,
 		onConfirm: () => alert('Confirmed!'),
-  } as IconButtonProps,
+  } as ConfirmButtonProps,
 };
 
 export const SpecificNode: Story = {
@@ -34,7 +33,7 @@ export const SpecificNode: Story = {
 		children: <GarbageIcon />,
 		confirmNode: "Delete",
 		onConfirm: () => alert('Confirmed!'),
-	} as IconButtonProps,
+	} as ConfirmButtonProps,
 };
 
 

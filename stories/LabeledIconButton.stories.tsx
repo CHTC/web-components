@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import LabeledIconButton from '../src/LabeledIconButton/LabeledIconButton';

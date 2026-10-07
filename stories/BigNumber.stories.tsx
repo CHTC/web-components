@@ -1,5 +1,5 @@
 import { BigNumber } from "../src";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 const meta: Meta<typeof BigNumber> = {
   title: "Components/Data/BigNumber",

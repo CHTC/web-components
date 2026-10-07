@@ -1,7 +1,7 @@
 import PieChart from "../src/PieChart";
 import defaultPieChartData from "./mockData/PieChart";
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 const meta: Meta<typeof PieChart> = {
   title: "Components/Data/PieChart",

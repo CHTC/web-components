@@ -1,4 +1,4 @@
-import {Article} from "../../src/types";
+import {ArticleData} from "../../src/Article/types";
 
 const markdownContent = `
 # The Rise of Open Source Software
@@ -48,7 +48,7 @@ Open source software has had a profound impact on the tech industry. It promotes
 </div>
 `
 
-const defaultArticle: Article = {
+const defaultArticle: ArticleData = {
 	content: markdownContent,
 	title: "Sample Article",
 	author: "John Doe",

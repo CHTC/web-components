@@ -1,4 +1,4 @@
-import { TableProps } from "../../src/types";
+import { TableProps } from "../../src/Table";
 
 export const defaultTableData: TableProps = {
   headers: [

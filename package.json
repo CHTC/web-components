@@ -17,6 +17,10 @@
       "types": "./dist/content/index.d.ts",
       "default": "./dist/content/index.js"
     },
+    "./github": {
+      "types": "./dist/github/index.d.ts",
+      "default": "./dist/github/index.js"
+    },
     "./themes": {
       "types": "./dist/themes/index.d.ts",
       "default": "./dist/themes/index.js"
@@ -51,6 +55,7 @@
   "dependencies": {
     "colorjs.io": "^0.5.2",
     "gray-matter": "^4.0.3",
+    "js-yaml": "^5.4.3",
     "react-wrap-balancer": "^1.1.1"
   },
   "devDependencies": {
@@ -70,6 +75,7 @@
     "@storybook/react": "^8.4.7",
     "@storybook/test": "^8.4.7",
     "@types/jest": "^29.5.8",
+    "@types/js-yaml": "^4.0.9",
     "@types/mdx": "^2.0.13",
     "@types/react": "^19",
     "@types/react-dom": "^19",

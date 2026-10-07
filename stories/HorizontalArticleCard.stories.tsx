@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import HorizontalArticleCard from '../src/HorizontalArticleCard';
+import HorizontalArticleCard from '../src/Article/components/HorizontalArticleCard';
 import defaultBackendArticle from "./mockData/BackendArticle";
 
 const meta: Meta<typeof HorizontalArticleCard> = {

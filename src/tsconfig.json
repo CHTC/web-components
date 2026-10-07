@@ -3,7 +3,8 @@
   "include": [
     "./*",
     "./charts/*",
-    "./content/*"
+    "./content/*",
+    "./github/*"
   ],
   "compilerOptions": {
     "rootDir": ".",

@@ -1,5 +1,5 @@
 import defaultArticle from "./Article";
-import {BackendArticle} from "../../src/types";
+import {BackendArticle} from "../../src/Article/types";
 
 const defaultBackendArticle: BackendArticle = {
 	slug: ['sample-article'],

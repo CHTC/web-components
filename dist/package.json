@@ -22,6 +22,10 @@
       "types": "./content/index.d.ts",
       "default": "./content/index.js"
     },
+    "./github": {
+      "types": "./github/index.d.ts",
+      "default": "./github/index.js"
+    },
     "./themes": {
       "types": "./themes/index.d.ts",
       "default": "./themes/index.js"
@@ -45,6 +49,7 @@
   "dependencies": {
     "colorjs.io": "^0.5.2",
     "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
     "react-wrap-balancer": "^1.1.1"
   },
   "peerDependencies": {

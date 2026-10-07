@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ArticleCard from '../src/ArticleCard';
+import ArticleCard from '../src/Article/components/ArticleCard';
 import defaultBackendArticle from "./mockData/BackendArticle";
 
 const meta: Meta<typeof ArticleCard> = {

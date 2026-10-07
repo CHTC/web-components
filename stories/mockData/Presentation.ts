@@ -1,4 +1,4 @@
-import { Presentation } from "../../src/types";
+import { PresentationData } from "../../src/Presentation/types";
 
 const markdownContent = `
 Computational notebooks have become a critical tool of scientific discovery,
@@ -23,7 +23,7 @@ Whatever markdown you'd [like to put here](https://example.com).
 More content
 `
 
-const defaultPresentation: Presentation = {
+const defaultPresentation: PresentationData = {
   title: "Wrangling Complex Notebook Workflows with Floability",
   presenter: "Douglas Thain",
   event: "HTC25",

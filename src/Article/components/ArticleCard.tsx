@@ -3,6 +3,8 @@ import Balancer from "react-wrap-balancer";
 import {ArticleCardProps} from "../types";
 import Link from "next/link";
 import TopStyledBlock from "../../TopStyledBlock";
+import MarkdownContent from "../../markdownComponents/MarkdownContent";
+import {linkedCardExcerptComponents} from "../../markdownComponents/excerptComponents";
 
 const ArticleCard = ({href, article} : ArticleCardProps) => {
 
@@ -14,7 +16,9 @@ const ArticleCard = ({href, article} : ArticleCardProps) => {
 
 	return (
 			<Box borderRadius={2} overflow={"hidden"} sx={style}>
-				<Link href={href}>
+				{/* The whole card is the link, so it takes the theme's body text color
+				    rather than the browser's link blue, visited purple and underline. */}
+				<Box component={Link} href={href} sx={{color: "text.primary", textDecoration: "none"}}>
 					<Box>
 						<img style={{objectFit: "cover", width: "100%", aspectRatio: 2}} src={article.image.path} alt={article.image.alt} />
 					</Box>
@@ -25,10 +29,12 @@ const ArticleCard = ({href, article} : ArticleCardProps) => {
 									<Typography variant={"h6"} sx={{fontWeight: "bold"}}><Balancer>{article.title}</Balancer></Typography>
 								</TopStyledBlock>
 							</Box>
-							<Typography variant={"body1"}>{article.excerpt}</Typography>
+							<MarkdownContent components={linkedCardExcerptComponents}>
+								{article.excerpt}
+							</MarkdownContent>
 						</Box>
 					</Box>
-				</Link>
+				</Box>
 			</Box>
 	)
 }

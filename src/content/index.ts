@@ -6,6 +6,7 @@ export * from "../Staff";
 
 export { default as MarkdownContent } from "../markdownComponents/MarkdownContent";
 export { default as markdownComponents } from "../markdownComponents";
+export { default as excerptComponents, linkedCardExcerptComponents } from "../markdownComponents/excerptComponents";
 
 export type { Website } from "../types";
 export * from "../utils";

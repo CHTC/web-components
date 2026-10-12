@@ -3,29 +3,37 @@ import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import type { Components } from "react-markdown";
 
+/*
+ * react-markdown hands every component the mdast `node` it came from. It is
+ * useful for inspecting the source tree, but it is not a DOM attribute, and
+ * MUI forwards unknown props straight through — so leaving it in the spread
+ * stamps `node="[object Object]"` onto the rendered element. Every component
+ * below drops it before spreading the rest.
+ */
+
 const markdownComponents: Components = {
-  h1: ({ children, ...props }) => {
+  h1: ({ children, node, ...props }) => {
     return (
       <Typography component={"h1"} variant="h4" gutterBottom {...props}>
         {children}
       </Typography>
     );
   },
-  h2: ({ children, ...props }) => {
+  h2: ({ children, node, ...props }) => {
     return (
       <Typography component={"h2"} variant="h5" gutterBottom {...props}>
         {children}
       </Typography>
     );
   },
-  h3: ({ children, ...props }) => {
+  h3: ({ children, node, ...props }) => {
     return (
       <Typography component={"h3"} variant="h6" gutterBottom {...props}>
         {children}
       </Typography>
     );
   },
-  h4: ({ children, ...props }) => {
+  h4: ({ children, node, ...props }) => {
     return (
       <Typography
         component={"h4"}
@@ -39,7 +47,7 @@ const markdownComponents: Components = {
       </Typography>
     );
   },
-  h5: ({ children, ...props }) => {
+  h5: ({ children, node, ...props }) => {
     return (
       <Typography
         component={"h5"}
@@ -52,7 +60,7 @@ const markdownComponents: Components = {
       </Typography>
     );
   },
-  h6: ({ children, ...props }) => {
+  h6: ({ children, node, ...props }) => {
     return (
       <Typography
         component={"h6"}
@@ -66,14 +74,20 @@ const markdownComponents: Components = {
       </Typography>
     );
   },
-  p: (props) => (
+  p: ({ node, ...props }) => (
     <Typography variant="body1" component={"div"} gutterBottom {...props} />
   ), // use sx for spacing
-  a: (props) => <MuiLink {...props} />,
-  ul: (props) => <Box component="ul" sx={{ pl: 4, mb: 2 }} {...props} />,
-  ol: (props) => <Box component="ol" sx={{ pl: 4, mb: 2 }} {...props} />,
-  li: (props) => <Box component="li" sx={{ mb: 0.5 }} {...props} />,
-  blockquote: (props) => (
+  a: ({ node, ...props }) => <MuiLink {...props} />,
+  ul: ({ node, ...props }) => (
+    <Box component="ul" sx={{ pl: 4, mb: 2 }} {...props} />
+  ),
+  ol: ({ node, ...props }) => (
+    <Box component="ol" sx={{ pl: 4, mb: 2 }} {...props} />
+  ),
+  li: ({ node, ...props }) => (
+    <Box component="li" sx={{ mb: 0.5 }} {...props} />
+  ),
+  blockquote: ({ node, ...props }) => (
     <Box
       component="blockquote"
       sx={{
@@ -88,7 +102,7 @@ const markdownComponents: Components = {
       {...props}
     />
   ),
-  code: ({ children, ...props }) => {
+  code: ({ children, node, ...props }) => {
     return (
       <>
         <link
@@ -111,7 +125,7 @@ const markdownComponents: Components = {
       </>
     );
   },
-  pre: (props) => (
+  pre: ({ node, ...props }) => (
     <Box
       component="pre"
       sx={{
@@ -124,7 +138,7 @@ const markdownComponents: Components = {
       {...props}
     />
   ),
-  img: (props) => {
+  img: ({ node, ...props }) => {
     return (
       <img
         {...props}

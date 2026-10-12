@@ -2,6 +2,8 @@ import {Grid, Typography, Box} from '@mui/material';
 import Balancer from "react-wrap-balancer";
 
 import TopStyledBlock from "../../TopStyledBlock";
+import MarkdownContent from "../../markdownComponents/MarkdownContent";
+import excerptComponents from "../../markdownComponents/excerptComponents";
 import Link from "next/link";
 import {ArrowRight} from "@mui/icons-material";
 import {ArticleCardProps} from "../types";
@@ -20,10 +22,14 @@ const HorizontalArticleCard = ({href, article} : ArticleCardProps) => {
 									<Typography variant={"h5"}><Balancer>{article.title}</Balancer></Typography>
 								</TopStyledBlock>
 							</Box>
-							<Typography variant={"body1"}>{article.excerpt}</Typography>
+							{/* The excerpt sits outside the card's anchor here, so links
+							    in it can stay real links. */}
+							<MarkdownContent components={excerptComponents}>
+								{article.excerpt}
+							</MarkdownContent>
 							<Box sx={{marginTop: "auto", paddingTop: "2rem", fontWeight: "300"}}>
 								<Box sx={{color: "#0885ff"}}>
-									<Link href={href}>
+									<Link href={href} style={{color: "inherit", textDecoration: "none"}}>
 										<Typography variant={"body1"} sx={{display: "inline", paddingRight: ".2rem"}}>
 											Read More
 										</Typography>

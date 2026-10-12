@@ -16,9 +16,10 @@ const ArticleCard = ({href, article} : ArticleCardProps) => {
 
 	return (
 			<Box borderRadius={2} overflow={"hidden"} sx={style}>
-				{/* The whole card is the link, so it takes the theme's body text color
-				    rather than the browser's link blue, visited purple and underline. */}
-				<Box component={Link} href={href} sx={{color: "text.primary", textDecoration: "none"}}>
+				{/* The whole card is the link. `inherit` picks up the theme's body
+				    text color from the cascade rather than the browser's link blue,
+				    visited purple and underline. */}
+				<Link href={href} style={{color: "inherit", textDecoration: "none"}}>
 					<Box>
 						<img style={{objectFit: "cover", width: "100%", aspectRatio: 2}} src={article.image.path} alt={article.image.alt} />
 					</Box>
@@ -34,7 +35,7 @@ const ArticleCard = ({href, article} : ArticleCardProps) => {
 							</MarkdownContent>
 						</Box>
 					</Box>
-				</Box>
+				</Link>
 			</Box>
 	)
 }

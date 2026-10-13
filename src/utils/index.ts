@@ -4,3 +4,6 @@ export { getSlugFromPath } from "./getSlugFromPath";
 export { getDateFromPath } from "./getDateFromPath";
 export { isDatedMarkdown } from "./isDatedMarkdown";
 export { toArray } from "./toArray";
+export { summarize } from "./summarize";
+export { firstParagraph } from "./firstParagraph";
+export { isoDate } from "./isoDate";

@@ -4,8 +4,21 @@ import Balancer from "react-wrap-balancer";
 import {BackendArticle} from '../types'
 import MarkdownContent from "../../markdownComponents/MarkdownContent";
 import {formatLongDate} from "../../utils/formatLongDate";
+import type {SiteImageComponent} from "../../images/types";
 
-const Article = ({article}: {article: BackendArticle}) => {
+interface ArticleProps {
+	article: BackendArticle;
+	/**
+	 * Component rendered for images in the article body. Defaults to a plain
+	 * `<img>`; pass `next/image` or `ExportedImage` to have them optimized.
+	 */
+	imageComponent?: SiteImageComponent;
+}
+
+/* The body sits in a `maxWidth="md"` container, so 900px is its widest. */
+const BODY_IMAGE_SIZES = "(max-width: 900px) 100vw, 900px";
+
+const Article = ({article, imageComponent}: ArticleProps) => {
 	return (
 			<Container maxWidth={"md"}>
 				<Box pt={6}>
@@ -19,7 +32,7 @@ const Article = ({article}: {article: BackendArticle}) => {
 							<Typography variant={"h5"}>{formatLongDate(article.date)}</Typography>
 						</Box>
 					</Box>
-					<MarkdownContent>
+					<MarkdownContent imageComponent={imageComponent} imageSizes={BODY_IMAGE_SIZES}>
 						{article.content}
 					</MarkdownContent>
 				</Box>

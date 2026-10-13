@@ -20,7 +20,11 @@ export {
 } from "./github";
 
 export { default as MarkdownContent } from "./markdownComponents/MarkdownContent";
-export { default as markdownComponents } from "./markdownComponents";
+export {
+  default as markdownComponents,
+  createMarkdownComponents,
+  type MarkdownComponentOptions,
+} from "./markdownComponents/markdownComponents";
 export { default as excerptComponents, linkedCardExcerptComponents } from "./markdownComponents/excerptComponents";
 
 // Standalone components.
@@ -35,5 +39,8 @@ export { default as TopStyledBlock } from "./TopStyledBlock";
 export * from "./UW";
 
 export type { Website } from "./types";
+
+// Pluggable image rendering.
+export * from "./images";
 export * from "./utils";
 export * from "./themes";

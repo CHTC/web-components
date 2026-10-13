@@ -1,4 +1,5 @@
 import type { Website } from "../types";
+import type { SiteImageComponent } from "../images/types";
 
 export type ArticleTag = "chtc_featured_article";
 export type ArticleType = "news" | "user" | "tech-blog";
@@ -41,4 +42,9 @@ export interface BackendArticle extends ArticleData {
 export interface ArticleCardProps {
   href: string;
   article: BackendArticle;
+  /**
+   * Component rendered for the card's image. Defaults to a plain `<img>`;
+   * pass `next/image` or `ExportedImage` to have it optimized.
+   */
+  imageComponent?: SiteImageComponent;
 }

@@ -5,8 +5,13 @@ export * from "../Presentation";
 export * from "../Staff";
 
 export { default as MarkdownContent } from "../markdownComponents/MarkdownContent";
-export { default as markdownComponents } from "../markdownComponents";
+export {
+  default as markdownComponents,
+  createMarkdownComponents,
+  type MarkdownComponentOptions,
+} from "../markdownComponents/markdownComponents";
 export { default as excerptComponents, linkedCardExcerptComponents } from "../markdownComponents/excerptComponents";
 
 export type { Website } from "../types";
+export * from "../images";
 export * from "../utils";

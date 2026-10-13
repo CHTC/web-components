@@ -1,11 +1,21 @@
 import Markdown, { type Components } from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import markdownComponents from "./markdownComponents";
+import markdownComponents, {
+  createMarkdownComponents,
+} from "./markdownComponents";
+import type { SiteImageComponent } from "../images/types";
 
 interface MarkdownContentProps {
   children?: string | null;
   /** Override the component map; defaults to the shared markdownComponents. */
   components?: Components;
+  /**
+   * Component rendered for images in the markdown. Ignored when `components`
+   * is supplied, since that map already decides how images render.
+   */
+  imageComponent?: SiteImageComponent;
+  /** `sizes` hint forwarded to `imageComponent`. */
+  imageSizes?: string;
 }
 
 /**
@@ -15,11 +25,21 @@ interface MarkdownContentProps {
  */
 const MarkdownContent = ({
   children,
-  components = markdownComponents,
-}: MarkdownContentProps) => (
-  <Markdown rehypePlugins={[rehypeRaw]} components={components}>
-    {children}
-  </Markdown>
-);
+  components,
+  imageComponent,
+  imageSizes,
+}: MarkdownContentProps) => {
+  const resolved =
+    components ??
+    (imageComponent
+      ? createMarkdownComponents({ imageComponent, imageSizes })
+      : markdownComponents);
+
+  return (
+    <Markdown rehypePlugins={[rehypeRaw]} components={resolved}>
+      {children}
+    </Markdown>
+  );
+};
 
 export default MarkdownContent;

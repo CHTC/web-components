@@ -196,7 +196,11 @@ export const createMarkdownComponents = ({
         alt={alt ?? ""}
         width={declaredWidth ?? FALLBACK_IMAGE_WIDTH}
         height={declaredHeight ?? FALLBACK_IMAGE_HEIGHT}
-        sizes={imageSizes}
+        // A declared width is what the image actually renders at — `maxWidth`
+        // only ever shrinks it — so it beats the caller's page-level hint. A
+        // 200px portrait that advertises the body width fetches the widest
+        // variant for nothing.
+        sizes={declaredWidth ? `${declaredWidth}px` : imageSizes}
         style={{
           maxWidth: "100%",
           // Both dimensions are set, so a component that warns about a

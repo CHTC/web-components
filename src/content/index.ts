@@ -15,4 +15,7 @@ export { default as excerptComponents, linkedCardExcerptComponents } from "../ma
 
 export type { Website } from "../types";
 export * from "../images";
+
+// Next.js metadata built from the content types above.
+export * from "../metadata";
 export * from "../utils";

@@ -43,5 +43,8 @@ export type { Website } from "./types";
 
 // Pluggable image rendering.
 export * from "./images";
+
+// Next.js metadata built from the content types above.
+export * from "./metadata";
 export * from "./utils";
 export * from "./themes";

@@ -1,6 +1,7 @@
 // Content components, their data types, and the getters that load them from
 // GitHub. Pulls in @11ty/gray-matter, js-yaml, and react-markdown.
 export * from "../Article";
+export * from "../Event";
 export * from "../Presentation";
 export * from "../Staff";
 

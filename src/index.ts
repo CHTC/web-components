@@ -1,5 +1,6 @@
 // Content: components, data types, and GitHub-backed getters per domain.
 export * from "./Article";
+export * from "./Event";
 export * from "./Presentation";
 export * from "./Staff";
 export * from "./Release";

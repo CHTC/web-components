@@ -1,7 +1,9 @@
-import { Box, Card, CardContent, Divider, Typography } from "@mui/material";
+import { Card, CardContent, Divider, Typography } from "@mui/material";
 import Link from "next/link";
 
 import DefaultImageComponent from "../../images/DefaultImageComponent";
+import MarkdownContent from "../../markdownComponents/MarkdownContent";
+import { createExcerptComponents } from "../../markdownComponents/excerptComponents";
 import type { EventCardProps } from "../types";
 import { formatEventDate } from "../utils/formatEventDate";
 
@@ -16,6 +18,13 @@ const CARD_IMAGE_HEIGHT = 600;
 /** One per row below `sm`, two up to `lg`, then three in an `xl` container. */
 const CARD_IMAGE_SIZES =
   "(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 500px";
+
+/*
+ * Excerpts are markdown, the same as an article's: the content repositories
+ * use the same frontmatter convention for both, and some carry links. At
+ * `body2`, matching the size this card used when the excerpt was plain text.
+ */
+const EXCERPT_COMPONENTS = createExcerptComponents("body2");
 
 const EventCard = ({
   href,
@@ -63,9 +72,9 @@ const EventCard = ({
         {event.excerpt && (
           <>
             <Divider sx={{ my: 1 }} />
-            <Typography variant="body2" color="text.primary">
+            <MarkdownContent components={EXCERPT_COMPONENTS}>
               {event.excerpt}
-            </Typography>
+            </MarkdownContent>
           </>
         )}
       </CardContent>

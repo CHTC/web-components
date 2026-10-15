@@ -26,7 +26,7 @@ export {
   createMarkdownComponents,
   type MarkdownComponentOptions,
 } from "./markdownComponents/markdownComponents";
-export { default as excerptComponents, linkedCardExcerptComponents } from "./markdownComponents/excerptComponents";
+export { default as excerptComponents, linkedCardExcerptComponents, createExcerptComponents } from "./markdownComponents/excerptComponents";
 
 // Standalone components.
 export { default as BigNumber, type BigNumberProps } from "./BigNumber";

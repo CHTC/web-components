@@ -5,18 +5,20 @@ import type { Components } from "react-markdown";
 import markdownComponents from "./markdownComponents";
 
 /** Every block in an excerpt renders at body size, headings included. */
-const ExcerptBlock: Components["p"] = ({ children, node, ...props }) => (
-  <Typography
-    variant="body1"
-    component="div"
-    // Space between paragraphs, but nothing trailing: a bottom margin on the
-    // last block would push the card's own padding open.
-    sx={{ "&:not(:last-child)": { mb: 1 } }}
-    {...props}
-  >
-    {children}
-  </Typography>
-);
+const excerptBlock =
+  (variant: "body1" | "body2"): Components["p"] =>
+  ({ children, node, ...props }) => (
+    <Typography
+      variant={variant}
+      component="div"
+      // Space between paragraphs, but nothing trailing: a bottom margin on the
+      // last block would push the card's own padding open.
+      sx={{ "&:not(:last-child)": { mb: 1 } }}
+      {...props}
+    >
+      {children}
+    </Typography>
+  );
 
 /**
  * Markdown components for the short excerpt shown on an article card.
@@ -29,19 +31,34 @@ const ExcerptBlock: Components["p"] = ({ children, node, ...props }) => (
  * underline, so a link in an excerpt reads as ordinary text rather than
  * pulling the eye away from the card's title.
  */
-const excerptComponents: Components = {
-  ...markdownComponents,
-  a: ({ node, ...props }) => (
-    <MuiLink underline="none" sx={{ color: "text.primary" }} {...props} />
-  ),
-  p: ExcerptBlock,
-  h1: ExcerptBlock,
-  h2: ExcerptBlock,
-  h3: ExcerptBlock,
-  h4: ExcerptBlock,
-  h5: ExcerptBlock,
-  h6: ExcerptBlock,
-};
+/**
+ * The excerpt map at a given body size.
+ *
+ * Cards do not all set their excerpt at the same size — an article card uses
+ * `body1`, an event card `body2` — and the size has to reach every block the
+ * markdown produces, not just the first paragraph, or a two-paragraph excerpt
+ * changes size halfway down.
+ */
+export function createExcerptComponents(
+  variant: "body1" | "body2" = "body1"
+): Components {
+  const Block = excerptBlock(variant);
+  return {
+    ...markdownComponents,
+    a: ({ node, ...props }) => (
+      <MuiLink underline="none" sx={{ color: "text.primary" }} {...props} />
+    ),
+    p: Block,
+    h1: Block,
+    h2: Block,
+    h3: Block,
+    h4: Block,
+    h5: Block,
+    h6: Block,
+  };
+}
+
+const excerptComponents: Components = createExcerptComponents();
 
 /**
  * The same map for an excerpt that sits *inside* a card-wide link.

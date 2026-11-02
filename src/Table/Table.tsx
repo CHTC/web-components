@@ -9,23 +9,11 @@ import {
   TableRow,
   TablePagination,
 } from "@mui/material";
-import { ReactNode } from "react";
-import {
-  ActionConfig,
-  CellComponentProps,
-  ColumnConfig,
-  TableData,
-} from "./types";
+import DefaultCell from "./DefaultCell";
+import { ActionConfig, ColumnConfig, TableData } from "./types";
 
 export const DEFAULT_PAGE_SIZE = 10;
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, DEFAULT_PAGE_SIZE, 25, 50, 100];
-
-/** The cell rendered for a column that has no CellComponent of its own */
-export const DefaultCell = <R extends TableData>({
-  value,
-}: CellComponentProps<R, keyof R>) => {
-  return <TableCell>{value as ReactNode}</TableCell>;
-};
 
 export interface TableProps<R extends TableData> {
   data: R[];

@@ -1,218 +1,115 @@
-import { Box, SxProps } from "@mui/material";
-import Table from "../src/Table";
-import { defaultTableData } from "./mockData/Table";
+import { TableCell } from "@mui/material";
+import { useState } from "react";
+import Table, {
+  CellComponentProps,
+  ColumnConfig,
+  DEFAULT_PAGE_SIZE,
+  SortState,
+  TableProps,
+} from "../src/Table";
+import { Organization, organizations } from "./mockData/Table";
 
 import type { Meta, StoryObj } from "@storybook/nextjs";
 
-const meta: Meta<typeof Table> = {
+const NumberCell = ({ value }: CellComponentProps<Organization, keyof Organization>) => (
+  <TableCell align="right">{Number(value).toLocaleString()}</TableCell>
+);
+
+const numberSort = (a: unknown, b: unknown) => Number(a) - Number(b);
+const stringSort = (a: unknown, b: unknown) => String(a).localeCompare(String(b));
+
+const columns: ColumnConfig<Organization>[] = [
+  { id: "organization", name: "Organization", sort: stringSort },
+  { id: "jobsRan", name: "Jobs Ran", sort: numberSort, CellComponent: NumberCell },
+  { id: "fieldsOfScience", name: "Impacted Fields of Science", sort: numberSort },
+  { id: "researchProjects", name: "Impacted Research Projects", sort: numberSort },
+];
+
+/**
+ * Table is controlled: the caller owns the sort and page and passes in the rows to show.
+ * This holds that state and sorts and pages the mock rows in memory, the way a table shell would.
+ */
+const ControlledTable = ({
+  data,
+  sortable,
+  paginated,
+}: {
+  data: Organization[];
+  sortable?: boolean;
+  paginated?: boolean;
+}) => {
+  const [sort, setSort] = useState<SortState<keyof Organization & string>>();
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+
+  const sortColumn = columns.find((column) => column.id === sort?.columnId);
+  const sorted =
+    sort && sortColumn?.sort
+      ? [...data].sort((a, b) => {
+          const result = sortColumn.sort!(a[sort.columnId], b[sort.columnId]);
+          return sort.direction === "asc" ? result : -result;
+        })
+      : data;
+  const rows = paginated ? sorted.slice(page * pageSize, (page + 1) * pageSize) : sorted;
+
+  const props: TableProps<Organization> = {
+    data: rows,
+    columns: sortable
+      ? columns.map((column) => ({
+          ...column,
+          onSort: (next: SortState) => {
+            setSort(next as SortState<keyof Organization & string>);
+            setPage(0);
+          },
+        }))
+      : columns.map(({ sort: _sort, ...column }) => column),
+    sort,
+    pagination: paginated
+      ? {
+          totalCount: data.length,
+          page,
+          pageSize,
+          onPageChange: setPage,
+          onPageSizeChange: (size) => {
+            setPageSize(size);
+            setPage(0);
+          },
+        }
+      : undefined,
+  };
+
+  return <Table {...props} />;
+};
+
+const meta: Meta<typeof ControlledTable> = {
   title: "Components/Data/Table",
-  component: (args) => {
-    return <Table {...args} />;
-  },
+  component: ControlledTable,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
+  args: {
+    data: organizations,
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: defaultTableData,
-};
+export const Default: Story = {};
 
 export const Sortable: Story = {
-  args: {
-    sortable: true,
-    defaultSortDirection: "desc",
-    defaultSortColumn: "Jobs Ran",
-    ...defaultTableData,
-  },
+  args: { sortable: true },
 };
 
-export const Checkered: Story = {
-  args: {
-    bodyRowSx: {
-      "&:nth-of-type(odd)": {
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
-      },
-    },
-    ...defaultTableData,
-  },
+export const Paginated: Story = {
+  args: { paginated: true },
 };
 
-export const WithLinkCells: Story = {
-  args: {
-    sortable: true,
-    defaultSortDirection: "desc",
-    defaultSortColumn: "Jobs Ran",
-    cellRenderer: (cell, _header, column, _row) => {
-      if (column === 0) {
-        return <a href={`https://www.google.com/search?q=${cell}`}>{cell}</a>;
-      }
-      return <>{cell.toLocaleString()}</>;
-    },
-    ...defaultTableData,
-  },
-};
-
-export const WithHeight: Story = {
-  args: {
-    containerSx: {
-      height: 400,
-    },
-    ...defaultTableData,
-  },
-};
-
-export const IndividualCellBorders: Story = {
-  args: {
-    bodyCellSx: {
-      border: {
-        "&:first-child": {
-          borderLeft: "1px solid rgba(224, 224, 224, 1)",
-        },
-        "&:last-child": {
-          borderRight: "1px solid rgba(224, 224, 224, 1)",
-        },
-        "&:not(:last-child)": {
-          borderRight: "1px solid rgba(224, 224, 224, 1)",
-        },
-      },
-    },
-    ...defaultTableData,
-  },
+export const SortableAndPaginated: Story = {
+  args: { sortable: true, paginated: true },
 };
 
 export const Empty: Story = {
-  args: {
-    headers: ["Column 1", "Column 2", "Column 3", "Column 4"],
-    data: [],
-  },
-};
-
-export const Pagination: Story = {
-  args: {
-    sortable: true,
-    defaultSortDirection: "desc",
-    defaultSortColumn: "Jobs Ran",
-    containerSx: {
-      width: 1000,
-    },
-    pagination: true,
-    pageSize: 10,
-    ...defaultTableData,
-  },
-};
-
-export const PaginationWithHeight: Story = {
-  args: {
-    sortable: true,
-    defaultSortDirection: "desc",
-    defaultSortColumn: "Jobs Ran",
-    containerSx: {
-      width: 1000,
-      height: 300,
-    },
-    pagination: true,
-    pageSize: 10,
-    ...defaultTableData,
-  },
-};
-
-export const PaginationWithCustomizableRows: Story = {
-  args: {
-    sortable: true,
-    defaultSortDirection: "desc",
-    defaultSortColumn: "Jobs Ran",
-    containerSx: {
-      width: 1000,
-    },
-    pagination: true,
-    pageSize: 10,
-    rowsPerPageOptions: [5, 10, 25, 50],
-    ...defaultTableData,
-  },
-};
-
-export const PaginationWithSkipButtons: Story = {
-  args: {
-    showSkipButtons: true,
-    ...Pagination.args,
-  },
-};
-
-const thinBorder = "1px solid rgb(138, 138, 138, 0.2)";
-const thickBorder = "1px solid rgb(0, 0, 0)";
-
-export const Styled: Story = {
-  args: {
-    sortable: true,
-    defaultSortDirection: "desc",
-    defaultSortColumn: "Jobs Ran",
-    headCellSx: {
-      ...borderHelper(thinBorder, thinBorder, "0.5rem"),
-      bgcolor: "#f5f5f5",
-      borderTop: thinBorder,
-      borderBottom: thickBorder,
-      fontWeight: "bold",
-    },
-    footerCellSx: {
-      bgcolor: "#f5f5f5",
-      borderTop: thickBorder,
-      borderBottom: thickBorder,
-      ...borderHelper(thinBorder, thinBorder, "", "0.5rem"),
-      fontWeight: "bold",
-    },
-    bodyCellSx: {
-      borderBottom: thinBorder,
-      ...borderHelper(thinBorder, thinBorder),
-    },
-    footerData: [
-      <Box display="flex" justifyContent="space-between">
-        <span>Summary Statistics:</span>
-        <span>73</span>
-      </Box>,
-      218_807_151,
-      57,
-      196,
-    ],
-    headers: defaultTableData.headers,
-    data: defaultTableData.data,
-  },
-};
-
-function borderHelper(
-  outer: string,
-  inner: string,
-  radiusTop?: string,
-  radiusBottom?: string
-): SxProps {
-  return {
-    borderTop: inner,
-    borderBottom: inner,
-    "&:first-child": {
-      borderLeft: outer,
-      borderTopLeftRadius: radiusTop,
-      borderBottomLeftRadius: radiusBottom,
-    },
-    "&:last-child": {
-      borderRight: outer,
-      borderTopRightRadius: radiusTop,
-      borderBottomRightRadius: radiusBottom,
-    },
-    "&:not(:last-child)": {
-      borderRight: inner,
-    },
-  };
-}
-
-export const StyledWithHeight: Story = {
-  args: {
-    ...Styled.args,
-    containerSx: {
-      height: 400,
-    },
-  },
+  args: { data: [] },
 };

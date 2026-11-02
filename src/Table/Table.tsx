@@ -1,259 +1,121 @@
-import { ReactElement, useState } from "react";
 import {
-  Table as MUITable,
-  SxProps,
-  TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
-  TablePagination,
-  TableRow,
+  Table as MUITable,
   TableSortLabel,
+  Box,
+  TableBody,
+  TableRow,
+  TablePagination,
 } from "@mui/material";
+import { ReactNode } from "react";
+import {
+  ActionConfig,
+  CellComponentProps,
+  ColumnConfig,
+  TableData,
+} from "./types";
 
-export interface TableProps {
-  /**
-   * The headers of the table.
-   */
-  headers: string[];
-  /**
-   * The data of the table.
-   *
-   * Each element in the array is a row, and each row contains cells of strings
-   * or numbers.
-   */
-  data: (string | number)[][];
-  /**
-   * The footer data that appears at the bottom of the table.
-   *
-   * This data is not sorted or paginated, and can include normal React elements.
-   */
-  footerData?: (string | number | ReactElement)[];
+export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE_OPTIONS = [5, DEFAULT_PAGE_SIZE, 25, 50, 100];
 
-  /**
-   * A function that takes in a cell, the column header, the column index, and
-   * the row index and returns the inner component of the cell to render.
-   *
-   * If the footer is not a React element, it will also be passed to this
-   * function.
-   */
-  cellRenderer?: (
-    cell: string | number,
-    columnHeader: string,
-    column: number,
-    row: number
-  ) => ReactElement;
+/** The cell rendered for a column that has no CellComponent of its own */
+export const DefaultCell = <R extends TableData>({
+  value,
+}: CellComponentProps<R, keyof R>) => {
+  return <TableCell>{value as ReactNode}</TableCell>;
+};
 
-  containerSx?: SxProps;
-  tableSx?: SxProps;
-
-  headSx?: SxProps;
-  headRowSx?: SxProps;
-  headCellSx?: SxProps;
-
-  footerSx?: SxProps;
-  footerRowSx?: SxProps;
-  footerCellSx?: SxProps;
-
-  bodySx?: SxProps;
-  bodyRowSx?: SxProps;
-  bodyCellSx?: SxProps;
-
-  /**
-   * Whether or not the table is sortable. False by default.
-   */
-  sortable?: boolean;
-  /**
-   * Sort direction of the table. Ascending by default.
-   */
-  defaultSortDirection?: "asc" | "desc";
-  /**
-   * The default column to sort by. The first column by default.
-   */
-  defaultSortColumn?: string | number;
-
-  /**
-   * Whether or not the table is paginated. False by default.
-   */
-  pagination?: boolean;
-  /**
-   * The number of rows per page. 10 by default.
-   */
-  pageSize?: number;
-  /**
-   * The options for the number of rows per page. No options (empty array) by
-   * default.
-   */
-  rowsPerPageOptions?: number[];
-  /**
-   * Whether or not to show the pagination buttons to skip to the first and last
-   * pages. False by default.
-   */
-  showSkipButtons?: boolean;
+export interface TableProps<R extends TableData> {
+  data: R[];
+  columns: (ColumnConfig<R> | ActionConfig<R>)[];
+  sort?: { columnId: keyof R; direction: "asc" | "desc" };
+  pagination?: {
+    totalCount: number;
+    page: number;
+    pageSize?: number;
+    onPageChange: (newPage: number) => void;
+    onPageSizeChange: (newRowsPerPage: number) => void;
+  };
 }
 
-const Table = ({
-  headers,
-  data,
-  footerData = [],
-  cellRenderer = (x) => <span>{x.toLocaleString()}</span>,
-  containerSx,
-  tableSx,
-  headSx,
-  headRowSx,
-  headCellSx,
-  bodyRowSx,
-  bodySx,
-  bodyCellSx,
-  footerSx,
-  footerRowSx,
-  footerCellSx,
-  sortable = false,
-  defaultSortDirection = "asc",
-  defaultSortColumn = 0,
-  pagination = false,
-  pageSize = -1,
-  rowsPerPageOptions = [],
-  showSkipButtons = false,
-}: TableProps) => {
-  const [page, setPage] = useState(0);
-  // -1 rows per page means show all rows
-  const [rowsPerPage, setRowsPerPage] = useState(pageSize);
-
-  // Default to ascending order
-  const [order, setOrder] = useState<"asc" | "desc">(defaultSortDirection);
-
-  // Default to first column for immediate sorting
-  const [orderBy, setOrderBy] = useState(
-    typeof defaultSortColumn === "number"
-      ? defaultSortColumn
-      : headers.indexOf(defaultSortColumn)
-  );
-
-  // We keep track of this because we want to show the sort direction only if
-  // the user has interacted with the sorting.
-  const [interactedWithSort, setInteractedWithSort] = useState(false);
-
-  const handleSort = (columnIndex: number) => {
-    const isAsc = orderBy === columnIndex && order === "asc";
-    setInteractedWithSort(true);
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(columnIndex);
-    // Reset page because we're changing the sorting and it would be weird to
-    // see random data
-    setPage(0);
-  };
-
-  const handlePageChange = (_event: React.MouseEvent | null, page: number) => {
-    setPage(page);
-  };
-
-  const handleRowsPerPageChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    // Reset page because we're changing the number of rows per page
-    // and it would be weird to see random data
-    setPage(0);
-  };
-
-  const formatFooterCell = (data: string | number | ReactElement) => {
-    if (typeof data === "number") {
-      return <span>{data.toLocaleString()}</span>;
-    } else if (typeof data === "string") {
-      return <span>{data}</span>;
-    } else {
-      return data;
-    }
-  };
-
-  const sortedData = !sortable
-    ? data
-    : data.sort((a: (string | number)[], b: (string | number)[]) => {
-        const aCell = a[orderBy];
-        const bCell = b[orderBy];
-
-        if (typeof aCell === "string" && typeof bCell === "string") {
-          return order === "asc"
-            ? aCell.localeCompare(bCell)
-            : bCell.localeCompare(aCell);
-        } else if (typeof aCell === "number" && typeof bCell === "number") {
-          return order === "asc" ? aCell - bCell : bCell - aCell;
-        } else {
-          throw new Error("Cannot compare different types");
-        }
-      });
-
+const Table = <R extends TableData>(props: TableProps<R>) => {
+  const { data, columns, sort, pagination } = props;
   return (
-    <TableContainer sx={containerSx}>
-      <MUITable sx={{ ...tableSx }} stickyHeader>
-        <TableHead sx={headSx}>
-          <TableRow sx={headRowSx}>
-            {headers.map((header, i) => (
-              // column headers
-              <TableCell key={i} sx={headCellSx}>
-                {!sortable ? (
-                  <span>{header}</span>
-                ) : (
+    <TableContainer>
+      <MUITable>
+        <TableHead>
+          <TableRow>
+            {columns.map((column, colIndex) => {
+              return (
+                <TableCell
+                  key={String(colIndex)}
+                  sortDirection={
+                    sort?.columnId === column.id ? sort.direction : false
+                  }
+                  onClick={() =>
+                    "onSort" in column &&
+                    column.onSort &&
+                    column.onSort({
+                      columnId: column.id,
+                      direction: sort?.direction == "asc" ? "desc" : "asc",
+                    })
+                  }
+                >
                   <TableSortLabel
-                    active={interactedWithSort ? orderBy === i : false}
-                    direction={order}
-                    onClick={() => handleSort(i)}
+                    hideSortIcon={!("sort" in column && column.sort !== null)}
+                    active={sort?.columnId === column.id}
+                    direction={sort?.direction}
                   >
-                    <span>{header}</span>
+                    {column.name}
+                    {sort?.columnId === column.id ? (
+                      <Box component="span" sx={{ display: "none" }}>
+                        {sort?.direction === "desc"
+                          ? "sorted descending"
+                          : "sorted ascending"}
+                      </Box>
+                    ) : null}
                   </TableSortLabel>
-                )}
-              </TableCell>
-            ))}
+                </TableCell>
+              );
+            })}
           </TableRow>
         </TableHead>
-        <TableBody sx={{ overflowY: "auto", ...bodySx }}>
-          {
-            // data rows
-            (!pagination
-              ? sortedData
-              : sortedData.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-            ).map((row, i) => (
-              <TableRow key={i} sx={bodyRowSx}>
-                {row.map((cell, j) => (
-                  <TableCell key={j} sx={bodyCellSx}>
-                    {cellRenderer(cell, headers[j], j, i)}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          }
-          <TableRow sx={footerRowSx}>
-            {footerData.map((cell, i) => (
-              // footer cells
-              <TableCell key={i} sx={footerCellSx}>
-                {formatFooterCell(cell)}
-              </TableCell>
-            ))}
-          </TableRow>
+        <TableBody>
+          {data.map((row, rowIndex) => (
+            <TableRow key={`${pagination ? pagination.page : 0}-${rowIndex}`}>
+              {columns.map((column, colIndex) => {
+                const CellComponent = column.CellComponent || DefaultCell;
+                const value = column.value
+                  ? column.value(row)
+                  : row[column.id as keyof R];
+                return (
+                  <CellComponent
+                    key={`${rowIndex}-${colIndex}`}
+                    row={row}
+                    value={value}
+                  />
+                );
+              })}
+            </TableRow>
+          ))}
         </TableBody>
-        <TableFooter sx={footerSx}>
-          {
-            // real footer (which is sticky and contains pagination)
-            pagination && (
-              <TablePagination
-                count={data.length}
-                onPageChange={handlePageChange}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={rowsPerPageOptions}
-                showFirstButton={showSkipButtons}
-                showLastButton={showSkipButtons}
-                onRowsPerPageChange={handleRowsPerPageChange}
-              />
-            )
-          }
-        </TableFooter>
       </MUITable>
+
+      {pagination !== undefined ? (
+        <TablePagination
+          component="div"
+          count={pagination.totalCount}
+          page={pagination.page}
+          onPageChange={(_event, newPage) => pagination.onPageChange(newPage)}
+          rowsPerPage={pagination.pageSize || DEFAULT_PAGE_SIZE_OPTIONS[0]}
+          onRowsPerPageChange={(event) =>
+            pagination.onPageSizeChange(parseInt(event.target.value, 10))
+          }
+          rowsPerPageOptions={DEFAULT_PAGE_SIZE_OPTIONS}
+        />
+      ) : null}
     </TableContainer>
   );
 };

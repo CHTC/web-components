@@ -33,7 +33,18 @@ export { default as BigNumber, type BigNumberProps } from "./BigNumber";
 export { default as PieChart, type PieChartData } from "./PieChart";
 export { default as ColorBar } from "./ColorBar";
 export { default as ConfirmButton } from "./ConfirmButton";
-export { default as Table, type TableProps } from "./Table";
+export {
+  default as Table,
+  DefaultCell,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_SIZE_OPTIONS,
+  type TableProps,
+  type ColumnConfig,
+  type ActionConfig,
+  type CellComponentProps,
+  type SortState,
+  type TableData,
+} from "./Table";
 export { default as TimeBar } from "./TimeBar";
 export * from "./TimeBar";
 export { default as TopStyledBlock } from "./TopStyledBlock";

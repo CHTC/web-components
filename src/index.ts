@@ -39,6 +39,8 @@ export {
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_SIZE_OPTIONS,
   type TableProps,
+  type BaseColumn,
+  type DisplayColumn,
   type ColumnConfig,
   type ActionConfig,
   type CellComponentProps,

@@ -7,6 +7,10 @@ export {
   type OptionsFilterInputProps,
 } from "./inputs/OptionsFilterInput";
 export {
+  default as RadioFilterInput,
+  type RadioFilterInputProps,
+} from "./inputs/RadioFilterInput";
+export {
   default as RangeFilterInput,
   type RangeFilterInputProps,
 } from "./inputs/RangeFilterInput";

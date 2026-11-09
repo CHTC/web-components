@@ -1,5 +1,6 @@
 import React from "react";
 import OptionsFilterInput from "./inputs/OptionsFilterInput";
+import RadioFilterInput from "./inputs/RadioFilterInput";
 import RangeFilterInput from "./inputs/RangeFilterInput";
 import { FilterDef, FilterInputProps, FilterOption } from "./types";
 
@@ -29,7 +30,7 @@ export function optionsFilter(options: FilterOption[]): FilterDef {
   };
 }
 
-/** A yes/no choice, shown as two options with the given labels. */
+/** A yes/no choice, shown as radio buttons with the given labels and "All". */
 export function booleanFilter(trueLabel = "Yes", falseLabel = "No"): FilterDef {
   const options = [
     { value: "true", label: trueLabel },
@@ -40,7 +41,7 @@ export function booleanFilter(trueLabel = "Yes", falseLabel = "No"): FilterDef {
     onChange,
     ...props
   }: FilterInputProps<unknown>) => (
-    <OptionsFilterInput
+    <RadioFilterInput
       {...props}
       options={options}
       value={typeof value === "boolean" ? String(value) : undefined}

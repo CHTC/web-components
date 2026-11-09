@@ -34,6 +34,24 @@ export { default as PieChart, type PieChartData } from "./PieChart";
 export { default as ColorBar } from "./ColorBar";
 export { default as ConfirmButton } from "./ConfirmButton";
 export {
+  default as SearchFilters,
+  DEFAULT_FILTER_ROW_HEIGHT,
+  optionsFilter,
+  booleanFilter,
+  rangeFilter,
+  OptionsFilterInput,
+  RangeFilterInput,
+  type SearchFiltersProps,
+  type OptionsFilterInputProps,
+  type RangeFilterInputProps,
+  type FilterInputProps,
+  type FilterDef,
+  type FilterKind,
+  type FilterColumn,
+  type FilterValues,
+  type FilterOption,
+} from "./SearchFilters";
+export {
   default as Table,
   DefaultCell,
   DEFAULT_PAGE_SIZE,

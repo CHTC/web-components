@@ -14,10 +14,15 @@ const OptionsFilterInput = ({
   options,
 }: OptionsFilterInputProps) => (
   <FormControl size="small" fullWidth>
-    <InputLabel id={id}>{label}</InputLabel>
+    {/* "All" is an empty value, so the label stays raised above it */}
+    <InputLabel id={id} shrink>
+      {label}
+    </InputLabel>
     <Select
       labelId={id}
       label={label}
+      displayEmpty
+      notched
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value || undefined)}
     >

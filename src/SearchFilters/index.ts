@@ -18,3 +18,7 @@ export {
   default as RangeFilterInput,
   type RangeFilterInputProps,
 } from "./inputs/RangeFilterInput";
+export {
+  default as TextFilterInput,
+  type TextFilterInputProps,
+} from "./inputs/TextFilterInput";

@@ -3,6 +3,7 @@ import DateRangeFilterInput from "./inputs/DateRangeFilterInput";
 import OptionsFilterInput from "./inputs/OptionsFilterInput";
 import RadioFilterInput from "./inputs/RadioFilterInput";
 import RangeFilterInput from "./inputs/RangeFilterInput";
+import TextFilterInput from "./inputs/TextFilterInput";
 import { DateRange, FilterDef, FilterInputProps, FilterOption } from "./types";
 
 // Each call creates a new FilterComponent, and React remounts an input whose component changes.
@@ -135,5 +136,22 @@ export function dateRangeFilter(): FilterDef {
       const range = { from: from || undefined, to: to || undefined };
       return isDateRange(range) ? range : undefined;
     },
+  };
+}
+
+const isText = (value: unknown): value is string =>
+  typeof value === "string" && value !== "";
+
+/** Free text the column should contain. */
+export function textFilter(): FilterDef {
+  const FilterComponent = ({ value, ...props }: FilterInputProps<unknown>) => (
+    <TextFilterInput {...props} value={isText(value) ? value : undefined} />
+  );
+  FilterComponent.displayName = "TextFilter";
+  return {
+    kind: "text",
+    FilterComponent,
+    encode: (value) => (isText(value) ? value : undefined),
+    decode: (raw) => (isText(raw) ? raw : undefined),
   };
 }

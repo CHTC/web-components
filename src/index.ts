@@ -41,6 +41,7 @@ export {
   rangeFilter,
   dateRangeFilter,
   textFilter,
+  numberFilter,
   isDateRange,
   DateRangeFilterInput,
   OptionsFilterInput,

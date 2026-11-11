@@ -15,7 +15,8 @@ export interface FilterInputProps<V> {
  * Identifies which factory made a filter, so consumers can map its value to their own query format.
  * Adding a kind is a breaking change for every consumer that maps kinds.
  */
-export type FilterKind = "options" | "range" | "boolean" | "dateRange" | "text";
+export type FilterKind =
+  "options" | "range" | "boolean" | "dateRange" | "text" | "number";
 
 /**
  * A filter: the input to render plus how its value is read and written as a string.

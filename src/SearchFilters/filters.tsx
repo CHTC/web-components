@@ -155,3 +155,20 @@ export function textFilter(): FilterDef {
     decode: (raw) => (isText(raw) ? raw : undefined),
   };
 }
+
+const isInteger = (value: unknown): value is string =>
+  typeof value === "string" && /^-?\d+$/.test(value);
+
+/** A whole number the column should equal, typed into the same box as textFilter. */
+export function numberFilter(): FilterDef {
+  const FilterComponent = ({ value, ...props }: FilterInputProps<unknown>) => (
+    <TextFilterInput {...props} value={isInteger(value) ? value : undefined} />
+  );
+  FilterComponent.displayName = "NumberFilter";
+  return {
+    kind: "number",
+    FilterComponent,
+    encode: (value) => (isInteger(value) ? value : undefined),
+    decode: (raw) => (isInteger(raw) ? raw : undefined),
+  };
+}

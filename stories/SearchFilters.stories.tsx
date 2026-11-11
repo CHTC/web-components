@@ -10,6 +10,7 @@ import SearchFilters, {
   optionsFilter,
   rangeFilter,
   textFilter,
+  numberFilter,
 } from "../src/SearchFilters";
 
 type Application = {
@@ -20,6 +21,7 @@ type Application = {
   memory: number;
   submitted: string;
   pi: string;
+  gid: number;
 };
 
 // Built once at module scope, the way a page defines its columns
@@ -49,6 +51,7 @@ const columnFilters: FilterColumn<Application>[] = [
   { id: "active", name: "Active", filter: booleanFilter("Active", "Inactive") },
   { id: "submitted", name: "Submitted", filter: dateRangeFilter() },
   { id: "pi", name: "PI", filter: textFilter() },
+  { id: "gid", name: "GID", filter: numberFilter() },
   { id: "cpus", name: "CPUs", filter: rangeFilter({ min: 0, max: 10 }) },
   {
     id: "memory",

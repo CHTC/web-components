@@ -1,8 +1,9 @@
 import React from "react";
+import DateRangeFilterInput from "./inputs/DateRangeFilterInput";
 import OptionsFilterInput from "./inputs/OptionsFilterInput";
 import RadioFilterInput from "./inputs/RadioFilterInput";
 import RangeFilterInput from "./inputs/RangeFilterInput";
-import { FilterDef, FilterInputProps, FilterOption } from "./types";
+import { DateRange, FilterDef, FilterInputProps, FilterOption } from "./types";
 
 // Each call creates a new FilterComponent, and React remounts an input whose component changes.
 // Call factories where columns are defined (module scope or a memo), not directly in a render.
@@ -95,6 +96,44 @@ export function rangeFilter({
     decode: (raw) => {
       const range = raw.split("..").map(Number);
       return isRange(range) ? range : undefined;
+    },
+  };
+}
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const isISODate = (value: unknown): value is string =>
+  typeof value === "string" && ISO_DATE.test(value);
+
+/** A DateRange with at least one end set. */
+export const isDateRange = (value: unknown): value is DateRange => {
+  if (typeof value !== "object" || value === null) return false;
+  const from = "from" in value ? value.from : undefined;
+  const to = "to" in value ? value.to : undefined;
+  return (
+    (from !== undefined || to !== undefined) &&
+    (from === undefined || isISODate(from)) &&
+    (to === undefined || isISODate(to))
+  );
+};
+
+/** A range of days, written as "from..to" with either end left empty when open. */
+export function dateRangeFilter(): FilterDef {
+  const FilterComponent = ({ value, ...props }: FilterInputProps<unknown>) => (
+    <DateRangeFilterInput
+      {...props}
+      value={isDateRange(value) ? value : undefined}
+    />
+  );
+  FilterComponent.displayName = "DateRangeFilter";
+  return {
+    kind: "dateRange",
+    FilterComponent,
+    encode: (value) =>
+      isDateRange(value) ? `${value.from ?? ""}..${value.to ?? ""}` : undefined,
+    decode: (raw) => {
+      const [from, to] = raw.split("..");
+      const range = { from: from || undefined, to: to || undefined };
+      return isDateRange(range) ? range : undefined;
     },
   };
 }

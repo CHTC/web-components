@@ -6,6 +6,7 @@ import SearchFilters, {
   FilterColumn,
   FilterValues,
   booleanFilter,
+  dateRangeFilter,
   optionsFilter,
   rangeFilter,
 } from "../src/SearchFilters";
@@ -16,6 +17,7 @@ type Application = {
   active: boolean;
   cpus: number;
   memory: number;
+  submitted: string;
 };
 
 // Built once at module scope, the way a page defines its columns
@@ -43,6 +45,7 @@ const columnFilters: FilterColumn<Application>[] = [
     ]),
   },
   { id: "active", name: "Active", filter: booleanFilter("Active", "Inactive") },
+  { id: "submitted", name: "Submitted", filter: dateRangeFilter() },
   { id: "cpus", name: "CPUs", filter: rangeFilter({ min: 0, max: 10 }) },
   {
     id: "memory",
@@ -94,6 +97,10 @@ export const Default: Story = {
 
 export const WithInitialFilters: Story = {
   args: {
-    initialValue: { status: "APPROVED", memory: [600, 900] },
+    initialValue: {
+      status: "APPROVED",
+      memory: [600, 900],
+      submitted: { from: "2026-10-01" },
+    },
   },
 };

@@ -39,10 +39,14 @@ export {
   optionsFilter,
   booleanFilter,
   rangeFilter,
+  dateRangeFilter,
+  isDateRange,
+  DateRangeFilterInput,
   OptionsFilterInput,
   RadioFilterInput,
   RangeFilterInput,
   type SearchFiltersProps,
+  type DateRangeFilterInputProps,
   type OptionsFilterInputProps,
   type RadioFilterInputProps,
   type RangeFilterInputProps,
@@ -52,6 +56,7 @@ export {
   type FilterColumn,
   type FilterValues,
   type FilterOption,
+  type DateRange,
 } from "./SearchFilters";
 export {
   default as Table,

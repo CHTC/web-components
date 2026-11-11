@@ -15,7 +15,7 @@ export interface FilterInputProps<V> {
  * Identifies which factory made a filter, so consumers can map its value to their own query format.
  * Adding a kind is a breaking change for every consumer that maps kinds.
  */
-export type FilterKind = "options" | "range" | "boolean";
+export type FilterKind = "options" | "range" | "boolean" | "dateRange";
 
 /**
  * A filter: the input to render plus how its value is read and written as a string.
@@ -37,6 +37,12 @@ export interface FilterColumn<R extends TableData> extends BaseColumn<R> {
 
 /** Filter values keyed by column id. An unset filter has no key. */
 export type FilterValues = Record<string, unknown>;
+
+/** Local "YYYY-MM-DD" dates, both inclusive. Either end may be left open. */
+export interface DateRange {
+  from?: string;
+  to?: string;
+}
 
 export interface FilterOption {
   value: string;

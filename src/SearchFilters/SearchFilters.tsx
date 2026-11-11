@@ -82,6 +82,7 @@ const SearchFilters = <R extends TableData>({
     px: 1.5,
     borderBottom: 1,
     borderColor: "divider",
+    "&:last-child": { borderBottom: 0 },
   };
 
   return (
@@ -147,15 +148,17 @@ const SearchFilters = <R extends TableData>({
           </Box>
         );
       })}
-      <Box sx={{ ...rowSx, borderBottom: 0 }}>
-        <IconButton
-          aria-label="Add filter"
-          onClick={() => setRows((current) => [...current, newRow()])}
-          disabled={rows.length >= columnFilters.length}
-        >
-          <Add />
-        </IconButton>
-      </Box>
+      {/* Every column already has a row, so there is nothing left to add */}
+      {rows.length < columnFilters.length && (
+        <Box sx={rowSx}>
+          <IconButton
+            aria-label="Add filter"
+            onClick={() => setRows((current) => [...current, newRow()])}
+          >
+            <Add />
+          </IconButton>
+        </Box>
+      )}
     </Box>
   );
 };
